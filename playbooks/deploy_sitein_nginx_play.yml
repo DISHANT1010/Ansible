@@ -1,0 +1,32 @@
+-
+ name: deploy index.html in nginx
+ hosts: servers
+ become: true
+ tasks:
+   - name: install nginx
+     apt:
+       name: nginx
+       state: latest
+     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+   - name: install nginx
+     yum:
+       name: nginx
+       state: latest
+     when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
+
+   - name: start nginx
+     service:
+       name: nginx
+       state: started
+       enabled: yes
+
+   - name: deploy index.html in nginx
+     copy:
+       src: /home/ansible/ansible-playbooks/files/index.html
+       dest: /var/www/html/index.html
+
+   - name: check nginx status
+     service_facts:
+     register: nginx_status
+
+   
