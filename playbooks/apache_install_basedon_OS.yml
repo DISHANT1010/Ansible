@@ -1,0 +1,23 @@
+-
+  name: install apche or httpd for multi os
+  hosts: servers
+  become: yes
+  tasks:
+    - name: install apache or httpd when os is debian or ubuntu
+      apt: 
+        name: apache
+        state: latest
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+    - name: install httpd when os is redhat or centos
+      yum:
+        name: httpd
+        state: latest
+      when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
+    - name: start apache or httpd
+      service:
+        name: "{{ 'apache' if ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' else 'httpd' }}"
+        state: started
+        enabled: yes
+    - name: check apache or httpd status
+      service_facts:
+      register: apache_status     
