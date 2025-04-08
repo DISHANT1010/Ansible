@@ -1,0 +1,6 @@
+-
+  name: Nginx Install
+  hosts: servers
+  tasks:
+    - name: This is show the data
+      command: data  
