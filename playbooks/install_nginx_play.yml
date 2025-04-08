@@ -1,7 +1,7 @@
 -
   name: This playbook installs Nginx
   hosts: servers
-  become: yes
+  become: true
   tasks:
     - name: install Nginx
       apt:
